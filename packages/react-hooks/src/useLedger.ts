@@ -52,9 +52,10 @@ function retrieveLedger (api: ApiPromise): LedgerGeneric | Ledger {
   if (!ledger || ledgerType !== currType || currApp !== ledgerApp) {
     const genesisHex = api.genesisHash.toHex();
     
-    // Special case for Creditcoin3
+    // Special case for Creditcoin3 and DevNet
     let network;
-    if (genesisHex === '0xfc4ec97a1c1f119c4353aecb4a17c7c0cf7b40d5d660143d8bad9117e9866572') {
+    if (genesisHex === '0xfc4ec97a1c1f119c4353aecb4a17c7c0cf7b40d5d660143d8bad9117e9866572' || 
+        genesisHex === '0xfc9df99a665f964aed6649f275055e54df5e3420489538ed31d7788f53d11ef6') {
       network = 'polkadot'; // Use Polkadot's config for Creditcoin3
       console.log('📱 Using Polkadot Ledger config for Creditcoin3');
     } else {
@@ -85,7 +86,8 @@ function retrieveLedger (api: ApiPromise): LedgerGeneric | Ledger {
 function getState (api: ApiPromise): StateBase {
   // Force enable Ledger for Creditcoin3
   const genesisHash = api.genesisHash.toHex();
-  const isCreditcoin3 = genesisHash === '0xfc4ec97a1c1f119c4353aecb4a17c7c0cf7b40d5d660143d8bad9117e9866572';
+  const isCreditcoin3 = genesisHash === '0xfc4ec97a1c1f119c4353aecb4a17c7c0cf7b40d5d660143d8bad9117e9866572' || 
+      genesisHash === '0xfc9df99a665f964aed6649f275055e54df5e3420489538ed31d7788f53d11ef6';
   const hasLedgerChain = ledgerHashes.includes(genesisHash) || isCreditcoin3;
   const isLedgerCapable = hasWebUsb && hasLedgerChain;
 

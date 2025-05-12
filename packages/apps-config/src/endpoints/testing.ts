@@ -186,6 +186,17 @@ export const testChains: Omit<EndpointOption, 'teleport'>[] = [
     }
   },
   {
+    info: 'creditcoin3-devnet',
+    providers: {
+      'Creditcoin Foundation': 'wss://rpc.cc3-devnet.creditcoin.network/ws'
+    },
+    text: 'Creditcoin DevNet',
+    ui: {
+      color: '#9cffaa',
+      logo: chainsCreditcoinTestPNG
+    }
+  },
+  {
     info: 'cere',
     providers: {
       // 'Cere Network': 'wss://archive.testnet.cere.network/ws' // https://github.com/polkadot-js/apps/issues/9712

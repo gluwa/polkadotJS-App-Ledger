@@ -142,3 +142,90 @@ The accounts are stored in the following directories:
 * Windows: `%APPDATA%\polkadot-apps\polkadot-accounts`
 
 For more details on the desktop app, head over to [Electron package README](https://github.com/polkadot-js/apps/blob/master/packages/apps-electron/README.md).
+
+# Polkadot.js Apps with Creditcoin3 Extensions
+
+This is a fork of the [Polkadot.js Apps](https://github.com/polkadot-js/apps) with additional support for Creditcoin3 networks and Ledger hardware wallet integration.
+
+## Supported Creditcoin Networks
+
+This fork supports the following Creditcoin networks:
+
+- **Creditcoin Dryrun** (`creditcoin3`): A testing environment for Creditcoin3
+  - RPC Endpoint: `wss://rpc.cc3-devnet-dryrun.creditcoin.network/ws`
+  - Genesis Hash: `0xfc4ec97a1c1f119c4353aecb4a17c7c0cf7b40d5d660143d8bad9117e9866572`
+
+- **Creditcoin DevNet** (`creditcoin3-devnet`): Creditcoin3 development network
+  - RPC Endpoint: `wss://rpc.cc3-devnet.creditcoin.network/ws`
+  - Genesis Hash: `0xfc9df99a665f964aed6649f275055e54df5e3420489538ed31d7788f53d11ef6`
+
+- **Creditcoin Testnet** (`creditcoin-testnet`): The official Creditcoin3 testnet
+  - RPC Endpoint: `wss://rpc.cc3-testnet.creditcoin.network/ws`
+
+- **CC Enterprise Testnet** (`creditcoin-classic-testnet`): The classic Creditcoin testnet
+  - RPC Endpoint: `wss://rpc.testnet.creditcoin.network/ws`
+
+## Getting Started
+
+```bash
+# Install dependencies
+yarn install
+
+# Build the project
+yarn build
+
+# Apply custom scripts for Ledger support
+node scripts/addLedgerGenesis.js
+node scripts/enableLedgerUI.js
+node scripts/addLedgerCC3DevNet.js 
+node scripts/fixLedgerConnect.js
+
+# Start the application
+yarn start
+```
+
+## Custom Scripts
+
+This fork includes several custom scripts to enable Ledger hardware wallet support for Creditcoin networks:
+
+### 1. `addLedgerGenesis.js`
+
+This script adds the Creditcoin3 Dryrun genesis hash to the Polkadot.js networks configuration:
+
+- Adds the Creditcoin3 genesis hash to the known networks list
+- Registers it with the Polkadot Ledger application
+
+### 2. `enableLedgerUI.js`
+
+This script enables the Ledger hardware wallet UI interface for Creditcoin networks:
+
+- Patches the `useLedger.ts` hook in the react-hooks package
+- Modifies the `getState` function to recognize Creditcoin3 genesis hash
+- Forces the UI to display the hardware wallet connection interface for Creditcoin networks
+- Bypasses the standard chain verification that would otherwise hide Ledger options
+
+### 3. `addLedgerCC3DevNet.js`
+
+Similar to the addLedgerGenesis script, but adds the Creditcoin3 DevNet:
+
+- Adds the Creditcoin3 DevNet genesis hash to the known networks list
+- Registers it with the Polkadot Ledger application
+- Adds the DevNet RPC endpoint to available networks
+
+### 4. `fixLedgerConnect.js`
+
+This script patches the Ledger connection logic to properly connect to Creditcoin networks:
+
+- Modifies the useLedger hook to recognize Creditcoin networks
+- Ensures the proper app detection for Creditcoin networks (using Polkadot Ledger app)
+- Enables the hardware wallet connection UI for Creditcoin chains
+
+## Why This Fork?
+
+The Creditcoin network is built on Substrate and is compatible with the Polkadot ecosystem. However, the default Polkadot.js Apps doesn't include Creditcoin networks in its pre-configured networks list, and doesn't have the proper Ledger hardware wallet integration for these networks.
+
+This fork enables users to:
+
+1. Easily connect to Creditcoin networks without having to manually add custom endpoints
+2. Use Ledger hardware wallets with Creditcoin networks
+3. Access all the standard Polkadot.js Apps functionality with Creditcoin
