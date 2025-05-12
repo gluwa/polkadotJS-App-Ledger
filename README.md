@@ -229,3 +229,18 @@ This fork enables users to:
 1. Easily connect to Creditcoin networks without having to manually add custom endpoints
 2. Use Ledger hardware wallets with Creditcoin networks
 3. Access all the standard Polkadot.js Apps functionality with Creditcoin
+
+## Contributing
+
+If you'd like to contribute to this fork, please:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Submit a pull request
+
+For significant changes, please open an issue first to discuss what you would like to change.
+
+## License
+
+This project is licensed under the Apache-2.0 License - see the original [Polkadot.js Apps repository](https://github.com/polkadot-js/apps) for details.
