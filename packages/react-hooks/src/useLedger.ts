@@ -51,9 +51,16 @@ function retrieveLedger (api: ApiPromise): LedgerGeneric | Ledger {
 
   if (!ledger || ledgerType !== currType || currApp !== ledgerApp) {
     const genesisHex = api.genesisHash.toHex();
-    const network = ledgerChains.find((network) => knownGenesis[network].includes(genesisHex));
-
-    assert(network, `Unable to find a known Ledger config for genesisHash ${genesisHex}`);
+    
+    // Special case for Creditcoin3
+    let network;
+    if (genesisHex === '0xfc4ec97a1c1f119c4353aecb4a17c7c0cf7b40d5d660143d8bad9117e9866572') {
+      network = 'polkadot'; // Use Polkadot's config for Creditcoin3
+      console.log('📱 Using Polkadot Ledger config for Creditcoin3');
+    } else {
+      network = ledgerChains.find((network) => knownGenesis[network].includes(genesisHex));
+      assert(network, `Unable to find a known Ledger config for genesisHash ${genesisHex}`);
+    }
 
     if (currApp === 'generic') {
       // All chains use the `slip44` from polkadot in their derivation path in ledger.
@@ -76,7 +83,10 @@ function retrieveLedger (api: ApiPromise): LedgerGeneric | Ledger {
 }
 
 function getState (api: ApiPromise): StateBase {
-  const hasLedgerChain = ledgerHashes.includes(api.genesisHash.toHex());
+  // Force enable Ledger for Creditcoin3
+  const genesisHash = api.genesisHash.toHex();
+  const isCreditcoin3 = genesisHash === '0xfc4ec97a1c1f119c4353aecb4a17c7c0cf7b40d5d660143d8bad9117e9866572';
+  const hasLedgerChain = ledgerHashes.includes(genesisHash) || isCreditcoin3;
   const isLedgerCapable = hasWebUsb && hasLedgerChain;
 
   return {
